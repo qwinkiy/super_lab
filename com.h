@@ -12,7 +12,7 @@ struct command{
     int con_len;// 
 };
 
-struct command create_command(char* str1){
+struct command parse_command(char* str1){
     struct command comm = {-1, "", 0, "", 0};
     char * token = strtok(str1, " ");
     if (strcmp(token, "insert") == 0){
