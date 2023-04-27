@@ -89,7 +89,7 @@ void main()
 
     printf("\n\nOne node\n");
 
-    print_node(head, 2);
+    print_node_select(head, 2, "number,services,middle_name,first_name,last_name");
 
     return;
 }
