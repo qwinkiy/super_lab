@@ -6,14 +6,15 @@
 
 #include <string.h>
 
- 
+#define MAX_SERVICES 14
+#define SERVICE_NAME_LENGTH 8
 
 struct row {
     char last_name[20];
     char first_name[20];
     char middle_name[20];
-    int number;
-    char services[14][8];
+    char number[15];
+    char services[MAX_SERVICES][SERVICE_NAME_LENGTH];
 //     last_name:string;                                                                  // Фамилия владельца
 // first_name:string;                                                                     // Имя владельца
 // middle_name:string;                                                               // Отчество владельца
@@ -41,6 +42,8 @@ void print_row(struct row r) {
     printf("\n");
 }
 
+int read_db();
+
  
 void main()
 {
@@ -54,30 +57,75 @@ void main()
     strcpy(r.services[1], "sms");
     strcpy(r.services[3], "gprs");
     // r.last_name = "3r234234";
-    print_row(r);
-    FILE *file = fopen("1.txt","w");
-    fprintf(file, "out");
-    fclose(file); 
-    file = fopen("1.txt", "r");
-    char line[255];
-    fgets(line, 255, file);
-    printf("read line: %s\n", line);
-    fclose(file);
+    // print_row(r);
 
-    int* mas = NULL;
-    int N = 10;
-    mas = (int*)malloc(sizeof(int) * N);
+    read_db();    
 
-    if (mas != NULL) {
-        for (int i=0; i < N; ++i) {
-            mas[i] = i;
+    return;
+}
+
+int read_db() {
+
+    FILE* file = fopen("DB.csv", "r");
+    if (!file) {
+        printf("Error opening file\n");
+        return 1;
+    }
+
+    char buffer[1024];
+    struct row clients[100];
+    int num_clients = 0;
+
+    // Чтение заголовка
+    fgets(buffer, sizeof(buffer), file);
+
+    // Чтение строк
+    while (fgets(buffer, sizeof(buffer), file)) {
+        // Разбиение строки на поля
+        const char* delim = ";";
+
+        char* last_name = strtok(buffer, delim);
+        char* first_name = strtok(NULL, delim);
+        char* middle_name = strtok(NULL, delim);
+        char* number_str = strtok(NULL, delim);
+        char* services_str = strtok(NULL, "\n");
+
+        // Заполнение структуры клиента
+        if (1 || last_name && first_name && middle_name && number_str && services_str) 
+        {
+            strcpy(clients[num_clients].last_name, last_name);
+            strcpy(clients[num_clients].first_name, first_name);
+            strcpy(clients[num_clients].middle_name, middle_name);
+            strcpy(clients[num_clients].number, number_str);
+
+            // Разбиение списка услуг на отдельные названия
+            const char* del_serv = " ";
+            char* service = strtok(services_str, del_serv);
+            int i = 0;
+            while (service && i < MAX_SERVICES) {
+                strncpy(clients[num_clients].services[i], service, SERVICE_NAME_LENGTH);
+                service = strtok(NULL, del_serv);
+                i++;
+            }
+
+            num_clients++;
         }
     }
 
-    free(mas);
- 
-    printf("hello world!");
-    const char* str = "slfhdfskgjfdgk";
-    printf("%s\n", str);
-    return;
+    // Вывод информации о клиентах
+    for (int i = 0; i < num_clients; i++) {
+        // printf("%s\n", clients[i].number);
+        printf("%s %s %s, номер: %s, услуги:", clients[i].last_name, clients[i].first_name, clients[i].middle_name, clients[i].number);
+        for (int j = 0; j < MAX_SERVICES; j++) {
+            if (clients[i].services[j][0] != '\0') {
+                printf(" %s", clients[i].services[j]);
+            } else {
+                break;
+            }
+        }
+        printf("\n");
+    }
+
+    fclose(file);
+    return 0;
 }
