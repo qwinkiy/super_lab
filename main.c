@@ -4,9 +4,6 @@
 
 #include "list.h"
 
-#define MAX_SERVICES 14
-#define SERVICE_NAME_LENGTH 8
-
 struct node* read_db() {
 
     FILE* file = fopen("DB.csv", "r");
@@ -69,26 +66,12 @@ struct node* read_db() {
         }
     }
 
-    // print_list(head);
-
     fclose(file);
     return head;
 }
  
 void main()
 {
-    struct row r;
-    printf("size of: %lu\n", sizeof(r));
-    strcpy(r.first_name, "sdfsdfd");
-    strcpy(r.last_name, "123123132");
-    for (int i=0; i<14; i++)
-        strcpy(r.services[i], "");
-    strcpy(r.services[0], "calls");
-    strcpy(r.services[1], "sms");
-    strcpy(r.services[3], "gprs");
-    // r.last_name = "3r234234";
-    // print_row(r);
-
     struct node* head = read_db();  
     print_list(head);
 
@@ -103,6 +86,10 @@ void main()
     printf("\nAfter inserting\n");
 
     print_list(head);
+
+    printf("\n\nOne node\n");
+
+    print_node(head, 2);
 
     return;
 }

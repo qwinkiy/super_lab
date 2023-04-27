@@ -58,6 +58,23 @@ struct node* get_node(struct node* head, int n) {
     return head;
 }
 
+void print_node(struct node* head, int n) {
+    int counter = 0;
+    while (counter < n && head) {
+        head = head->next;
+        counter++;
+    }
+    printf("%s %s %s, номер %s, услуги:", head->data.last_name, head->data.first_name, head->data.middle_name, head->data.number);
+        for (int j = 0; j < MAX_SERVICES; j++) {
+            if (head->data.services[j][0] != '\0') {
+                printf(" %s", head->data.services[j]);
+            } else {
+                break;
+            }
+        }
+        printf("\n");
+}
+
 struct row pop(struct node **head) {
     struct node* prev = NULL;
     struct row val;
