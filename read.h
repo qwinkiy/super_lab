@@ -1,3 +1,7 @@
+#include <stdlib.h>
+#include "mem_calc.h"
+#include "parse_command.h"
+
 void read_file(){
     char buffer[256];
     FILE * f = fopen("input.txt","r");
