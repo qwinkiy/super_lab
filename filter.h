@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 #include "mem_calc.h"
 #include "list.h"
 
@@ -11,7 +12,7 @@ char* get_field(const char* cond)
         char t = cond[i];
         if(isalpha(t) == 0 && t != '_')
         {
-            char* res = malloc(i); 
+            char* res = (char*)malloc(i); 
             memcpy(res, cond, i);
             res[i] = '\0';
             return res;
@@ -21,7 +22,7 @@ char* get_field(const char* cond)
 
 char* get_value(const char* cond, int trunc_length)
 {
-    char* value = malloc(strlen(cond) - trunc_length + 1);
+    char* value = (char*)malloc(strlen(cond) - trunc_length + 1);
     memcpy(value, cond + trunc_length, strlen(value));
 
     return value;
