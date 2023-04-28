@@ -3,6 +3,7 @@
 #include "parse_command.h"
 #include "list.h"
 #include "select.h"
+#include "filter.h"
 
 void read_command(struct node* head){
     char buffer[256];
@@ -11,17 +12,24 @@ void read_command(struct node* head){
         while((fgets(buffer, 256, f)) != NULL){
             struct command a = parse_command(buffer);
                 if (a.command != -1){
+
+                    // SELECT
                     if (a.command == 2) {
-                        // printf("-exec select: ");
-                        // select(head, 0, a.fields);
+                        while (head != NULL) {
+                            if (filter(a.cond, head->data) == 1){ 
+                                printf("-exec select: ");
+                                select(head, 0, a.fields);
+                            }
+                            head = head->next;
+                        }
                     }
 
-                    printf("command: %i  origin: %s",a.command, buffer);
-                    printf("fileds: %s\n",a.fields);
-                    printf("fil_len: %i\n",a.fil_len);
-                    printf("cond: %s\n",a.cond);
-                    printf("con_len: %i\n",a.con_len);
-                    printf("конец\n\n");
+                    // printf("command: %i  origin: %s",a.command, buffer);
+                    // printf("fileds: %s\n",a.fields);
+                    // printf("fil_len: %i\n",a.fil_len);
+                    // printf("cond: %s\n",a.cond);
+                    // printf("con_len: %i\n",a.con_len);
+                    // printf("конец\n\n");
                     // вызов команд
             }
         }

@@ -102,6 +102,15 @@ void main()
 
     free_list(head);
     print_mem();
+
+    // char* s = "1234567890";
+    // char buf[10] ;
+    // strcpy(buf, s);
+
+    // printf("s = %s\n", s);
+    // printf("b = %s\n", buf);
+
+
     return;
 }
 

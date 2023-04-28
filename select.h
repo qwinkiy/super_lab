@@ -4,13 +4,13 @@
 
 
 void select(struct node* head, int n, const char* fields) {
-    int counter = 0;
-    while (counter < n && head) {
-        head = head->next;
-        counter++;
-    }
+    // int counter = 0;
+    // while (counter < n && head) {
+    //     head = head->next;
+    //     counter++;
+    // }
 
-    int* a = malloc(sizeof(int)*40); // TODO: УДАЛИТЬ, для теста!
+    // int* a = malloc(sizeof(int)*40); // TODO: УДАЛИТЬ, для теста!
 
     const char* del_serv = ",";
     char tmp[1024];

@@ -243,8 +243,10 @@ int filter(const char* cond, struct row r)
         return 1;
     }
     else
-    {          
-        char* single_cond = strtok(cond, " ");
+    {     
+        char tmp[1024];
+        strcpy (tmp, cond);   
+        char* single_cond = strtok(tmp, " ");
         while (single_cond) {            
             result = do_work(single_cond, r);
             if(result == 0)
