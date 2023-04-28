@@ -5,6 +5,7 @@
 #include "mem_calc.h"
 #include "list.h"
 #include "select.h"
+#include "read.h"
 
 struct node* read_db() {
 
@@ -96,6 +97,8 @@ void main()
     free_list(head);
 
     print_mem();
+
+    read_command();
 
     return;
 }
