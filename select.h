@@ -1,3 +1,4 @@
+#pragma once
 #include "mem_calc.h"
 #include "list.h"
 
@@ -15,9 +16,9 @@ void select(struct node* head, int n, const char* fields) {
     char tmp[1024];
     strcpy(tmp, fields);
     char* service = strtok(tmp, del_serv);
-    int i = 0;
     char flds[10][30];
 
+    int i = 0;
     while (service) {
         strcpy(flds[i], service);
         service = strtok(NULL, del_serv);
@@ -33,6 +34,11 @@ void select(struct node* head, int n, const char* fields) {
             printf("%s=%s ", flds[j], head->data.middle_name);
         if (strcmp(flds[j], "number") == 0) 
             printf("%s=%s ", flds[j], head->data.number);   
+        if (strcmp(flds[j], "bonus_id") == 0) 
+            printf("%s=%d ", flds[j], head->data.bonus_id); 
+        if (strcmp(flds[j], "discount_id") == 0) 
+            printf("%s=%d ", flds[j], head->data.discount_id); 
+
         if (strcmp(flds[j], "services") == 0) {
             printf("%s=[", flds[j]);
             int first=1;

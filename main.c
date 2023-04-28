@@ -43,6 +43,8 @@ struct node* read_db() {
         char* first_name = strtok(NULL, delim);
         char* middle_name = strtok(NULL, delim);
         char* number_str = strtok(NULL, delim);
+        char* discount_str = strtok(NULL, delim);
+        char* bonus_str = strtok(NULL, delim);
         char* services_str = strtok(NULL, "\n");
 
         // Заполнение структуры клиента
@@ -52,6 +54,8 @@ struct node* read_db() {
             strcpy(clients[num_clients].first_name, first_name);
             strcpy(clients[num_clients].middle_name, middle_name);
             strcpy(clients[num_clients].number, number_str);
+            clients[num_clients].discount_id = atoi(discount_str);
+            clients[num_clients].bonus_id  = atoi(bonus_str);
 
             // Разбиение списка услуг на отдельные названия
             const char* del_serv = " ";
@@ -83,7 +87,7 @@ void main()
 
     print_list(head);
 
-    struct row temp = {"Hello", "World", "!", "89173456789", {"s1","s2","s333"}};
+    struct row temp = {"last", "FIRST", "middle", "89173456789", {"s1","s2","s333"}};
     insert_back(&head, temp);
 
     printf("\nAfter inserting\n");
@@ -92,14 +96,12 @@ void main()
 
     printf("\n\nOne node\n");
 
-    select(head, 2, "number,services,middle_name,first_name,last_name");
+    // select(head, 2, "number,services,middle_name,first_name,last_name");
+
+    read_command(head);
 
     free_list(head);
-
     print_mem();
-
-    read_command();
-
     return;
 }
 

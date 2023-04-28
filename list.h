@@ -15,6 +15,9 @@ struct row {
     char middle_name[20];
     char number[15];
     char services[MAX_SERVICES][SERVICE_NAME_LENGTH];
+    int discount_id; 					// Код скидочной программы
+    int bonus_id; 					// Код бонусной программы
+
 };
 
 struct node {
@@ -68,7 +71,8 @@ void print_node(struct node* head, int n) {
         head = head->next;
         counter++;
     }
-    printf("%s %s %s, номер %s, услуги:", head->data.last_name, head->data.first_name, head->data.middle_name, head->data.number);
+    printf("%s %s %s, номер %s, дисконт: %d, бонус: %d, услуги:", head->data.last_name, head->data.first_name, 
+            head->data.middle_name, head->data.number, head->data.discount_id, head->data.bonus_id);
         for (int j = 0; j < MAX_SERVICES; j++) {
             if (head->data.services[j][0] != '\0') {
                 printf(" %s", head->data.services[j]);
@@ -108,7 +112,8 @@ struct row delete_node(struct node** head, int n) {
 
 void print_list(struct node* head) {
     while (head != NULL) {
-        printf("%s %s %s, номер %s, услуги:", head->data.last_name, head->data.first_name, head->data.middle_name, head->data.number);
+        printf("%s %s %s, номер %s, дисконт: %d, бонус: %d, услуги:", head->data.last_name, head->data.first_name, 
+            head->data.middle_name, head->data.number, head->data.discount_id, head->data.bonus_id);
         for (int j = 0; j < MAX_SERVICES; j++) {
             if (head->data.services[j][0] != '\0') {
                 printf(" %s", head->data.services[j]);

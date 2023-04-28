@@ -102,11 +102,22 @@ struct command parse_command(const char* str1){
     //проверка на атрибуты
     switch (comm.command){
         case 1: if (comm.fields == NULL){comm.command = -1;} break;
-        case 2: if ((comm.fields == NULL)&&(comm.cond == NULL)){comm.command = -1;} break;
+        case 2: if ((comm.fields == NULL)||(comm.cond == NULL)){comm.command = -1;} break;
         case 3: if (comm.cond == NULL){comm.command = -1;} break;
-        case 4: if ((comm.fields == NULL)&&(comm.cond == NULL)){comm.command = -1;} break;
+        case 4: if ((comm.fields == NULL)||(comm.cond == NULL)){comm.command = -1;} break;
         case 5: if (comm.fields == NULL){comm.command = -1;} break;
     }
-
+    if (comm.command == 1 || comm.command == 2 || comm.command == 4 || comm.command == 5) {
+        int len = strlen(comm.fields);
+        if(len > 0)
+            if(comm.fields[len-1] == '\n')
+                comm.fields[len-1] = 0;
+    }
+    if (comm.command == 2 || comm.command == 3 || comm.command == 4) {
+        int len = strlen(comm.cond);
+        if(len > 0)
+            if(comm.cond[len-1] == '\n')
+                comm.cond[len-1] = 0;
+    }
     return comm;
 }
