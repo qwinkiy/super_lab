@@ -113,9 +113,11 @@ int equal(const char* cond, struct row r)
 
     if(strcmp(field, "number") == 0)
     {
-        unsigned long converted_val; 
-        sscanf(r.number, "%d", &converted_val);
-        return ulong_comparison("==", converted_val, value);
+        unsigned long converted_val1; 
+        unsigned long converted_val2; 
+        sscanf(r.number, "%d", &converted_val1);
+        sscanf(r.number, "%d", &converted_val2);
+        return ulong_comparison("==", converted_val1, converted_val2);
     }
 }
 
