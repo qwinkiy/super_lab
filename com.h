@@ -7,13 +7,12 @@
 #include <string.h>
 
 struct command{
-    int command; // 0 - select, 1 - insert
+    int command; 
     char* fileds;
-    int fil_len;// first_name, last_name, number
+    int fil_len;
     char* cond;
-    int con_len;// 
+    int con_len;
 };
-
 struct command parse_command(char* str1){
     struct command comm = {-1, "", 0, "", 0};
     char * token = strtok(str1, " ");
@@ -46,7 +45,13 @@ struct command parse_command(char* str1){
         comm.fileds = strtok(NULL, "");
         comm.fil_len = sizeof(comm.fileds);
     }
-    //if (comm.command>=1) && (comm.command<=5){return comm;}
-    //else return comm;// тип вернуть что комнда говно, но по сути она не заполнится и будет пустой
+    //проверка на атрибуты
+    switch (comm.command){
+        case 1: if (comm.fileds == NULL){comm.command = -1;} break;
+        case 2: if ((comm.fileds == NULL)&&(comm.cond == NULL)){comm.command = -1;} break;
+        case 3: if (comm.cond == NULL){comm.command = -1;} break;
+        case 4: if ((comm.fileds == NULL)&&(comm.cond == NULL)){comm.command = -1;} break;
+        case 5: if (comm.fileds == NULL){comm.command = -1;} break;
+    }
     return comm;
 }
