@@ -5,6 +5,11 @@
 #include "mem_calc.h"
 #include "list.h"
 
+#define FILTER_ARRAY_SIZE 100
+
+char* glob_field;
+char* glob_value;
+
 char* get_field(const char* cond)
 {
     for(int i = 0; i < strlen(cond); i++)
@@ -15,6 +20,7 @@ char* get_field(const char* cond)
             char* res = (char*)malloc(i); 
             memcpy(res, cond, i);
             res[i] = '\0';
+            glob_field = res;
             return res;
         }
     }    
@@ -24,8 +30,32 @@ char* get_value(const char* cond, int trunc_length)
 {
     char* value = (char*)malloc(strlen(cond) - trunc_length + 1);
     memcpy(value, cond + trunc_length, strlen(value));
+    glob_value = value;
 
     return value;
+}
+
+void get_value_array(const char* cond, int trunc_length, char res_arr[FILTER_ARRAY_SIZE][12])
+{
+    for (int i=0; i<FILTER_ARRAY_SIZE; i++)
+        for (int j=0; j<12; j++)
+            res_arr[i][j] = '\0';
+    int start = 0;
+    int j = 0;
+    for(int i = trunc_length; i < strlen(cond); i++)
+    {      
+        char t = cond[i];
+        if(t == '\'' && start == 0)
+        {
+            start = i;
+        }
+        else if(t == '\'' && start != 0)
+        {
+            strncpy(res_arr[j], &(cond[start+1]), i - start - 1); 
+            start = 0;
+            j++; 
+        }
+    }     
 }
 
 int str_comparison(const char* comparison_operand, const char* val1, const char* val2)
@@ -94,13 +124,104 @@ int ulong_comparison(const char* comparison_operand, unsigned long val1, unsigne
     return 0;
 }
 
+int except(const char* cond, struct row r)
+{
+    char* field = get_field(cond);
+    char arr[FILTER_ARRAY_SIZE][12];
+    get_value_array(cond, strlen(field) + 3, arr);
+    int hit = 0;
+    int count = 0;
+
+    for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+    {
+        if(strcmp(arr[i], "\0") != 0)
+        {
+            count += 1;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    if(strcmp(field, "services") == 0)
+    {
+        for(int j = 0; j < MAX_SERVICES; j++)
+        {
+            for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+            {
+                if(strcmp(arr[i], r.services[j]) == 0 && strcmp(arr[i], "\0") != 0)
+                {
+                    hit += 1;
+                    break;
+                }
+
+                if(strcmp(arr[i], "\0") == 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        return count != hit; 
+    }
+
+    return 0;
+}
+
+int only_include(const char* cond, struct row r)
+{
+    char* field = get_field(cond);
+    char arr[FILTER_ARRAY_SIZE][12];
+    get_value_array(cond, strlen(field) + 3, arr);
+    int hit = 0;
+    int count = 0;
+
+    for(int i = 0; i < MAX_SERVICES; i++)
+    {
+        if(strcmp(r.services[i], "\0") != 0)
+        {
+            count += 1;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    if(strcmp(field, "services") == 0)
+    {
+        for(int j = 0; j < MAX_SERVICES; j++)
+        {
+            for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+            {
+                if(strcmp(arr[i], r.services[j]) == 0 && strcmp(arr[i], "\0") != 0)
+                {
+                    hit += 1;
+                    break;
+                }
+
+                if(strcmp(arr[i], "\0") == 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        return count == hit; 
+    }
+
+    return 0;
+}
+
 int equal(const char* cond, struct row r)
 {
     char* field = get_field(cond);
     char* value = get_value(cond, strlen(field) + 2);
+
     if(strcmp(field, "first_name") == 0)
     {
-        return str_comparison("==", r.first_name, value);
+        return str_comparison("==", r.first_name, value);      
     }
     if(strcmp(field, "last_name") == 0)
     {
@@ -116,9 +237,20 @@ int equal(const char* cond, struct row r)
         unsigned long converted_val1; 
         unsigned long converted_val2; 
         sscanf(r.number, "%d", &converted_val1);
-        sscanf(r.number, "%d", &converted_val2);
+        sscanf(value, "%d", &converted_val2);
         return ulong_comparison("==", converted_val1, converted_val2);
     }
+
+    if(strcmp(field, "discount_id") == 0)
+    {
+        return r.discount_id == atoi(value);
+    }
+    if(strcmp(field, "bonus_id") == 0)
+    {
+        return r.bonus_id == atoi(value);
+    }
+
+    return 0;
 }
 
 int not_equal(const char* cond, struct row r)
@@ -146,6 +278,17 @@ int not_equal(const char* cond, struct row r)
         sscanf(r.number, "%d", &converted_val2);
         return ulong_comparison("!=", converted_val1, converted_val2);
     }
+
+    if(strcmp(field, "discount_id") == 0)
+    {
+        return r.discount_id != atoi(value);
+    }
+    if(strcmp(field, "bonus_id") == 0)
+    {
+        return r.bonus_id != atoi(value);
+    }	
+
+    return 0;
 }
 
 int more(const char* cond, struct row r)
@@ -173,6 +316,17 @@ int more(const char* cond, struct row r)
         sscanf(r.number, "%d", &converted_val2);
         return ulong_comparison(">", converted_val1, converted_val2);
     }
+
+    if(strcmp(field, "discount_id") == 0)
+    {
+        return r.discount_id > atoi(value);
+    }
+    if(strcmp(field, "bonus_id") == 0)
+    {
+        return r.bonus_id > atoi(value);
+    }
+
+    return 0;
 }
 
 int less(const char* cond, struct row r)
@@ -200,6 +354,140 @@ int less(const char* cond, struct row r)
         sscanf(r.number, "%d", &converted_val2);
         return ulong_comparison("<", converted_val1, converted_val2);
     }
+
+    if(strcmp(field, "discount_id") == 0)
+    {
+        return r.discount_id < atoi(value);
+    }
+    if(strcmp(field, "bonus_id") == 0)
+    {
+        return r.bonus_id < atoi(value);
+    }
+
+    return 0;
+}
+
+int include(const char* cond, struct row r)
+{
+    char* field = get_field(cond);
+    char arr[FILTER_ARRAY_SIZE][12];
+    get_value_array(cond, strlen(field) + 3, arr);
+    int hit = 0;
+    int count = 0;
+
+    for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+    {
+        if(strcmp(arr[i], "\0") != 0)
+        {
+            count += 1;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    if(strcmp(field, "services") == 0)
+    {
+        for(int j = 0; j < MAX_SERVICES; j++)
+        {
+            for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+            {
+                if(strcmp(arr[i], r.services[j]) == 0  && strcmp(arr[i], "\0") != 0)
+                {
+                    hit += 1;
+                    break;
+                }
+
+                if(strcmp(arr[i], "\0") == 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        return count == hit; 
+    }
+
+    return 0;
+}
+
+int in(const char* cond, struct row r)
+{
+    char* field = get_field(cond);
+    char arr[FILTER_ARRAY_SIZE][12];
+    get_value_array(cond, strlen(field) + 3, arr);
+    if(strcmp(field, "first_name") == 0)
+    {
+        for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+        {
+            if(strcmp(arr[i], r.first_name) == 0  && strcmp(arr[i], "\0") != 0)
+            {
+                return 1;
+            }
+
+            if(strcmp(arr[i], "\0") == 0)
+            {
+                break;
+            }
+        }
+        return 0;     
+    }    
+    if(strcmp(field, "last_name") == 0)
+    {
+        for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+        {
+            if(strcmp(arr[i], r.last_name) == 0  && strcmp(arr[i], "\0") != 0)
+            {
+                return 1;
+            }
+
+            if(strcmp(arr[i], "\0") == 0)
+            {
+                break;
+            }
+        }
+        return 0; 
+    }
+    if(strcmp(field, "middle_name") == 0)
+    {
+        for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+        {
+            if(strcmp(arr[i], r.middle_name) == 0  && strcmp(arr[i], "\0") != 0)
+            {
+                return 1;
+            }
+
+            if(strcmp(arr[i], "\0") == 0)
+            {
+                break;
+            }
+        }
+        return 0; 
+    }
+
+    if(strcmp(field, "services") == 0)
+    {
+        for(int j = 0; j < MAX_SERVICES; j++)
+        {
+            for(int i = 0; i < FILTER_ARRAY_SIZE; i++)
+            {
+                if(strcmp(arr[i], r.services[j]) == 0  && strcmp(arr[i], "\0") != 0)
+                {
+                    return 1;
+                }
+
+                if(strcmp(arr[i], "\0") == 0)
+                {
+                    break;
+                }
+            }
+        }
+        
+        return 0; 
+    }
+
+    return 0;
 }
 
 int do_work(const char* cond, struct row r)
@@ -214,19 +502,33 @@ int do_work(const char* cond, struct row r)
     }    
     else if(strstr(cond, "=="))
     {
-        return equal(cond, r);
+        if(strstr(cond, "["))
+        {
+            return only_include(cond, r);
+        }
+        else
+        {
+            return equal(cond, r);
+        }        
     }
     else if(strstr(cond, "!="))
     {
-        return not_equal(cond, r);
+        if(strstr(cond, "["))
+        {
+            return except(cond, r);
+        }
+        else
+        {
+            return not_equal(cond, r);
+        }
     }
     else if(strstr(cond, "/in/"))
     {
-        //return in(cond, r);
+        return in(cond, r);
     }    
     else if(strstr(cond, "/include/"))
     {
-        //return include(cond, r);
+        return include(cond, r);
     }
     else
     {
@@ -234,29 +536,69 @@ int do_work(const char* cond, struct row r)
     }
 }
 
+char* get_single_cond(const char* cond, int offset)
+{
+    if(offset != 0) offset += 1; // пропускаем пробел
+    for(int i = offset; i < strlen(cond); i++)
+    {
+        int size = 0;
+        char t = cond[i];
+        if(t == ' ')
+        {
+            size = abs(offset - i);
+            char* res = (char*)malloc(size);
+            memcpy(res, cond + offset, size);
+            res[size] = '\0';
+            return res;
+        }
+    }
+
+    if(offset != 0)
+    {
+        char* res = (char*)malloc(strlen(cond) - offset);
+        memcpy(res, cond + offset, strlen(cond) - offset);
+        res[strlen(cond) - offset] = '\0';
+        return res;
+    }
+
+    return NULL;
+}
+
 int filter(const char* cond, struct row r) 
 {
     int result; 
-    int str_len = strlen(cond);
-    if (str_len == 0)
+    int len_cond = strlen(cond);
+    int temp_len = 0;
+    if (len_cond == 0)
     {
         return 1;
     }
     else
-    {     
-        char tmp[1024];
-        strcpy (tmp, cond);   
-        char* single_cond = strtok(tmp, " ");
-        while (single_cond) {            
+    {          
+        char* single_cond = get_single_cond(cond, 0);    
+        temp_len += strlen(single_cond);     
+        while (single_cond) {   
             result = do_work(single_cond, r);
             if(result == 0)
             {
+                free(glob_field);
+                free(glob_value);
+                free(single_cond);
                 return 0;        
             }
             
-            single_cond = strtok(NULL, " ");
+            if(temp_len >= len_cond)
+            {
+                break;
+            }
+            single_cond = get_single_cond(cond, temp_len);
+            temp_len += strlen(single_cond) + 1;            
         }
-    }
 
+        free(glob_field);
+        free(glob_value);
+        free(single_cond);
+    }    
+    
     return 1;
 }
