@@ -9,12 +9,12 @@ void read_command(){
         while((fgets(buffer, 256, f))!=NULL){
             struct command a = parse_command(buffer);
                 if (a.command != -1){
-                    printf("command: %i\n",a.command);
-                    printf("fileds: %s\n",a.fileds);
+                    printf("command: %i  origin: %s\n",a.command, buffer);
+                    printf("fileds: %s\n",a.fields);
                     printf("fil_len: %i\n",a.fil_len);
                     printf("cond: %s\n",a.cond);
                     printf("con_len: %i\n",a.con_len);
-                    printf("конец\n");
+                    printf("конец\n\n");
                     // вызов команд
             }
         }
