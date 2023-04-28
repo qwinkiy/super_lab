@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "mem_calc.h"
 #include "list.h"
 #include "select.h"
 
@@ -91,6 +92,10 @@ void main()
     printf("\n\nOne node\n");
 
     select(head, 2, "number,services,middle_name,first_name,last_name");
+
+    free_list(head);
+
+    print_mem();
 
     return;
 }

@@ -1,3 +1,4 @@
+#include "mem_calc.h"
 #include "list.h"
 
 
@@ -7,6 +8,8 @@ void select(struct node* head, int n, const char* fields) {
         head = head->next;
         counter++;
     }
+
+    int* a = malloc(sizeof(int)*40); // TODO: УДАЛИТЬ, для теста!
 
     const char* del_serv = ",";
     char tmp[1024];

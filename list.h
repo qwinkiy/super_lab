@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "mem_calc.h"
+
 #define MAX_SERVICES 14
 #define SERVICE_NAME_LENGTH 8
 
