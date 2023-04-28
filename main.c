@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "list.h"
+#include "select.h"
 
 struct node* read_db() {
 
@@ -89,7 +90,7 @@ void main()
 
     printf("\n\nOne node\n");
 
-    print_node_select(head, 2, "number,services,middle_name,first_name,last_name");
+    select(head, 2, "number,services,middle_name,first_name,last_name");
 
     return;
 }
