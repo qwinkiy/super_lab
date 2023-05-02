@@ -31,7 +31,6 @@ struct row* row_to_insert(const char* fields){
         const char* del_serv = "=";
         char* field = strtok(single_fld[j], del_serv);
         char* value = strtok(NULL, del_serv);
-        // printf("=== field = %s, value = %s\n", field,value);
 
         if (strcmp(field, "last_name") == 0) {
             strcpy(row->last_name, value);

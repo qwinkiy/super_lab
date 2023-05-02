@@ -35,10 +35,7 @@ char* find_and_insert(char* str,char* sub_str, char* sub_str_rep){
       strncpy(buffer, str, strlen(str) - strlen(strstr(str,sub_str)) );
       strcat(buffer, sub_str_rep);  
       strcat(buffer, strstr(str,sub_str) + strlen(sub_str));
-      
-      
-      //strcat(buffer, str + strlen(str) - strlen(strstr(str,sub_str)) + 1);      
-      //strcat(buffer, strstr(str,su))
+
       strcpy(str, buffer);   
       
       // освобождаем память отведённую под массив

@@ -81,7 +81,6 @@ struct node* read_db() {
 void main()
 {
     struct node* head = read_db();  
-    // print_list(head);
 
     struct row temp = {"last", "FIRST", "middle", "89173456789", {"s1","s2","s333"}};
     insert_back(&head, temp);    
@@ -95,17 +94,9 @@ void main()
     printf("\n\nAfter processing\n");
     print_list(head); 
 
-    // Не поднимать!
     free_list(head);
     
     print_mem();
 
     return;
 }
-
-// last first middle
-// last: Dolgov first: Ivan mid: Vovkin, номер 89173456778, дисконт: 1, бонус: 1, услуги: calls sms gprs internets1 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10
-// last: Vologin first: Artem mid: Ufydarovich, номер 89881122333, дисконт: 3, бонус: 3, услуги: calls sms
-// last: Ivanov first: Artem mid: Ufydarovich, номер 88005553535, дисконт: 3, бонус: 3, услуги: calls sms
-// last: last first: FIRST mid: middle, номер 89173456789, дисконт: 0, бонус: 0, услуги: s1 s2 s333
-

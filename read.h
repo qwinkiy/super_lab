@@ -9,6 +9,7 @@
 #include "uniq.h"
 #include "insert.h"
 
+// чтение и выполнение команд
 struct node* read_command(struct node* head) {
     char buffer[256];
     FILE * f = fopen("input.txt","r");

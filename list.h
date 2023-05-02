@@ -15,8 +15,8 @@ struct row {
     char middle_name[20];
     char number[15];
     char services[MAX_SERVICES][SERVICE_NAME_LENGTH];
-    int discount_id; 					// Код скидочной программы
-    int bonus_id; 					// Код бонусной программы
+    int discount_id; 				
+    int bonus_id; 					
 
 };
 
