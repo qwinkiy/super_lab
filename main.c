@@ -95,10 +95,12 @@ void main()
 
     print_list(head);
 
-    printf("\n\nOne node\n");
+    printf("\n\nBefore processing\n");
 
     head = read_command(head);
 
+    printf("\n\nAfter processing\n");
+    print_list(head);
 
     // Не поднимать!
     free_list(head);

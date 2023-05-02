@@ -36,12 +36,11 @@ struct node* read_command(struct node* head) {
                     }
 
                     // UPDATE
-                    // if (a.command == 4) {
-                    //     printf("-exec delete: ");
-                    //     int cnt = exec_update(head, a.cond, a.fields);
-                    //     printf("deleted: %d rows\n", cnt);
-                    // }
-
+                    if (a.command == 4) {
+                        printf("-exec update %s %s\n", a.fields, a.cond);
+                        int cnt = exec_update(head, a.cond, a.fields);
+                        printf("update: %d\n", cnt);
+                    }
                 }
 
 
