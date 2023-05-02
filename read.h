@@ -7,6 +7,7 @@
 #include "delete.h"
 #include "update.h"
 #include "uniq.h"
+#include "insert.h"
 
 struct node* read_command(struct node* head) {
     char buffer[256];
@@ -15,6 +16,10 @@ struct node* read_command(struct node* head) {
         while((fgets(buffer, 256, f)) != NULL) {
             struct command a = parse_command(buffer);
                 if (a.command != -1) {
+					//INSERT
+					if (a.command == 1) {
+						//row_to_insert(a.fields);
+					}
 
                     // SELECT
                     if (a.command == 2) {

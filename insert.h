@@ -7,11 +7,11 @@
 #include "mem_calc.h"
 #include "list.h"
 
-struct row exec_insert(struct command comm){
+struct row row_to_insert(const char* fields){
     struct row row;
     const char* del_serv = ",";
-    char tmp[1024];
-    strcpy(tmp, comm.fields);
+    char tmp[512];
+    strcpy(tmp, fields);
     char* service = strtok(tmp, del_serv);
     char single_fld[20][30];
     
