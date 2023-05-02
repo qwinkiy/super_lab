@@ -13,38 +13,23 @@
 int exec_uniq(struct node* head, const char* fields) {
     int first = 1;
     int cnt=0;
+    int i = 0;
+    struct node* head_base = head;
     while (head != NULL) {
-        cnt = uniq(head, fields);
+        if (uniq(head, fields, i) == 1) {
+            delete_node(&head_base, i);
+            head = head_base;
+            cnt++;
+            i--;        
+        }
         head = head->next;
+        i++;
     }
     printf("uniq: %d rows\n", cnt);
     return cnt;
 }
 
-
-void sort_array(char arr[FILTER_ARRAY_SIZE][12])
-{
-    char temp[12];
-    for(int i=0; i<FILTER_ARRAY_SIZE; i++){
-        for(int j=0; j<FILTER_ARRAY_SIZE - 1 - i; j++){
-            if(strcmp(arr[j], arr[j+1]) > 0){
-                strcpy(temp, arr[j]);
-                strcpy(arr[j], arr[j + 1]);
-                strcpy(arr[j + 1], temp);
-            }
-        }
-    }  
-}
-
-char* concat(const char *s1, const char *s2)
-{
-    char *result = malloc(strlen(s1) + strlen(s2) + 1); 
-    strcpy(result, s1);
-    strcat(result, s2);
-    return result;
-}
-
-int uniq(struct node* head, const char* fields)
+int uniq(struct node* head, const char* fields, int n)
 {
     const char* del_serv = ",";
     char tmp[1024];
@@ -52,9 +37,9 @@ int uniq(struct node* head, const char* fields)
     char* service = strtok(tmp, del_serv);
     char flds[10][30];
 
-    char target[10][30]; 
-    char* row_main_flds; 
-    char* row_services_flds; 
+    char filter_cond[1024]; 
+    for (int i=0; i<1024; i++)
+        filter_cond[i] = '\0';    
 
     int i = 0;
     while (service) {
@@ -64,56 +49,68 @@ int uniq(struct node* head, const char* fields)
     }
     for (int j=0; j<i; j++) {  
         if (strcmp(flds[j], "last_name") == 0)
-            row_main_flds = concat(head->data.last_name, head->data.last_name); 
+        {
+            strcat(filter_cond, "last_name==");
+            strcat(filter_cond, head->data.last_name);
+            strcat(filter_cond, " ");
+        }             
         if (strcmp(flds[j], "first_name") == 0)
-            row_main_flds = concat(head->data.last_name, head->data.first_name); 
+        {
+            strcat(filter_cond, "first_name==");
+            strcat(filter_cond, head->data.first_name);
+            strcat(filter_cond, " ");
+        }            
         if (strcmp(flds[j], "middle_name") == 0)
-            row_main_flds = concat(row_main_flds, head->data.middle_name);
+        {
+            strcat(filter_cond, "middle_name==");
+            strcat(filter_cond, head->data.middle_name);
+            strcat(filter_cond, " ");
+        }            
         if (strcmp(flds[j], "number") == 0)
-            row_main_flds = concat(row_main_flds, head->data.number);
+        {
+            strcat(filter_cond, "number==");
+            strcat(filter_cond, head->data.number);
+            strcat(filter_cond, " ");
+        }            
         if (strcmp(flds[j], "bonus_id") == 0)
         {
             char* bonus_id;
-            itoa(head->data.bonus_id, bonus_id, 10);            
-            row_main_flds = concat(row_main_flds, bonus_id);
+            itoa(head->data.bonus_id, bonus_id, 10);           
+            strcat(filter_cond, "bonus_id==");
+            strcat(filter_cond, head->data.bonus_id); 
+            strcat(filter_cond, " ");
         }            
         if (strcmp(flds[j], "discount_id") == 0)
         {
             char* discount_id; 
             itoa(head->data.discount_id, discount_id, 10);
-            row_main_flds = concat(row_main_flds, discount_id);
+            strcat(filter_cond, "discount_id==");
+            strcat(filter_cond, head->data.discount_id);
+            strcat(filter_cond, " ");
         }
         if (strcmp(flds[j], "services") == 0) 
         {
-            char tmp_serv[MAX_SERVICES][SERVICE_NAME_LENGTH];
-            for (int i=0; i<MAX_SERVICES; i++)
-                for (int j=0; j<SERVICE_NAME_LENGTH; j++)
-                    tmp_serv[i][j] = '\0';
-
-            strcpy(tmp_serv, head->data.services);
-            sort_array(tmp_serv);
             for (int k = 0; k < MAX_SERVICES; k++) 
             {                
-                if (tmp_serv[k][0] != '\0') {
-                    row_main_flds = concat(row_main_flds, tmp_serv[k]);
+                if (head->data.services[k][0] != '\0') {
+                    strcat(filter_cond, "services==");
+                    strcat(filter_cond, head->data.services[k]);
+                    strcat(filter_cond, " ");
                 } else {
                     break;
                 }
-            }
-            
+            }            
         }
+    }    
+    
+    struct node* nested_head = head->next;
+    while (nested_head != NULL) {   
+        if(filter(&filter_cond, nested_head->data))
+        {
+            return 1;
+        }     
+        nested_head = nested_head->next;
     }
 
-    return 0;
-    /*struct node* nested_head = head->next;
-        while (nested_head != NULL) {   
-            if()
-            {
-
-            }     
-            nested_head = head->next;
-        }
-*/
-    
-    
+    return 0;  
 }
