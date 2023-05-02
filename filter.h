@@ -9,32 +9,27 @@
 
 #define FILTER_ARRAY_SIZE 100
 
-char* glob_field;
-char* glob_value;
-
-char* get_field(const char* cond)
+void get_field(const char* cond, char field[15])
 {
+    for (int i=0; i<15; i++)
+        field[i] = '\0';
+
     for(int i = 0; i < strlen(cond); i++)
     {      
         char t = cond[i];
         if(isalpha(t) == 0 && t != '_')
-        {
-            char* res = (char*)malloc(i); 
-            memcpy(res, cond, i);
-            res[i] = '\0';
-            glob_field = res;
-            return res;
+        {            
+            strncpy(field, cond, i);
+            break;
         }
     }    
 }
 
-char* get_value(const char* cond, int trunc_length)
+void get_value(const char* cond, int trunc_length, char value[50])
 {
-    char* value = (char*)malloc(strlen(cond) - trunc_length + 1);
-    memcpy(value, cond + trunc_length, strlen(value));
-    glob_value = value;
-
-    return value;
+    for (int i=0; i<50; i++)
+        value[i] = '\0';
+    strncpy(value, cond + trunc_length, strlen(cond) - trunc_length + 1);
 }
 
 void get_value_array(const char* cond, int trunc_length, char res_arr[FILTER_ARRAY_SIZE][12])
@@ -128,7 +123,8 @@ int ulong_comparison(const char* comparison_operand, unsigned long val1, unsigne
 
 int except(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
+    char field[15];
+    get_field(cond, field);
     char arr[FILTER_ARRAY_SIZE][12];
     get_value_array(cond, strlen(field) + 3, arr);
     int hit = 0;
@@ -173,7 +169,8 @@ int except(const char* cond, struct row r)
 
 int only_include(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
+    char field[15];
+    get_field(cond, field);
     char arr[FILTER_ARRAY_SIZE][12];
     get_value_array(cond, strlen(field) + 3, arr);
     int hit = 0;
@@ -218,8 +215,10 @@ int only_include(const char* cond, struct row r)
 
 int equal(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
-    char* value = get_value(cond, strlen(field) + 2);
+    char field[15];
+    get_field(cond, field);
+    char value[50];
+    get_value(cond, strlen(field) + 2, value);
 
     if(strcmp(field, "first_name") == 0)
     {
@@ -257,8 +256,11 @@ int equal(const char* cond, struct row r)
 
 int not_equal(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
-    char* value = get_value(cond, strlen(field) + 2);
+    char field[15];
+    get_field(cond, field);
+    char value[50];
+    get_value(cond, strlen(field) + 2, value);
+
     if(strcmp(field, "first_name") == 0)
     {
         return str_comparison("!=", r.first_name, value);
@@ -295,8 +297,11 @@ int not_equal(const char* cond, struct row r)
 
 int more(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
-    char* value = get_value(cond, strlen(field) + 1);
+    char field[15];
+    get_field(cond, field);
+    char value[50];
+    get_value(cond, strlen(field) + 1, value);
+
     if(strcmp(field, "first_name") == 0)
     {
         return str_comparison(">", r.first_name, value);
@@ -333,8 +338,11 @@ int more(const char* cond, struct row r)
 
 int less(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
-    char* value = get_value(cond, strlen(field) + 1);
+    char field[15];
+    get_field(cond, field);
+    char value[50];
+    get_value(cond, strlen(field) + 1, value);
+
     if(strcmp(field, "first_name") == 0)
     {
         return str_comparison("<", r.first_name, value);         
@@ -371,7 +379,8 @@ int less(const char* cond, struct row r)
 
 int include(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
+    char field[15];
+    get_field(cond, field);
     char arr[FILTER_ARRAY_SIZE][12];
     get_value_array(cond, strlen(field) + 3, arr);
     int hit = 0;
@@ -416,7 +425,8 @@ int include(const char* cond, struct row r)
 
 int in(const char* cond, struct row r)
 {
-    char* field = get_field(cond);
+    char field[15];
+    get_field(cond, field);
     char arr[FILTER_ARRAY_SIZE][12];
     get_value_array(cond, strlen(field) + 3, arr);
     if(strcmp(field, "first_name") == 0)
@@ -552,7 +562,7 @@ int filter(const char* cond, struct row r)
         char tmp[1024];
         strcpy(tmp, cond);
         char* service = strtok(tmp, del_serv);
-        char single_cond[20][30];
+        char single_cond[20][50];
 
         int i = 0;
         while (service) {
@@ -566,17 +576,8 @@ int filter(const char* cond, struct row r)
             result = do_work(single_cond[j], r);
             if(result == 0)
             {
-                // if (glob_field)
-                //     free(glob_field);
-                // if (glob_value)
-                //     free(glob_value);
                 return 0;        
             }            
-
-            if (glob_field)
-                free(glob_field);
-            if (glob_value)
-                free(glob_value);
         }        
     }    
     
