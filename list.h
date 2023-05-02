@@ -112,7 +112,7 @@ struct row delete_node(struct node** head, int n) {
 
 void print_list(struct node* head) {
     while (head != NULL) {
-        printf("%s %s %s, номер %s, дисконт: %d, бонус: %d, услуги:", head->data.last_name, head->data.first_name, 
+        printf("last: %s first: %s mid: %s, номер %s, дисконт: %d, бонус: %d, услуги:", head->data.last_name, head->data.first_name, 
             head->data.middle_name, head->data.number, head->data.discount_id, head->data.bonus_id);
         for (int j = 0; j < MAX_SERVICES; j++) {
             if (head->data.services[j][0] != '\0') {

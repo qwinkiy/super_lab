@@ -4,6 +4,7 @@
 #include "list.h"
 #include "select.h"
 #include "filter.h"
+#include "delete.h"
 
 void read_command(struct node* head){
     char buffer[256];
@@ -18,11 +19,19 @@ void read_command(struct node* head){
                         while (head != NULL) {
                             if (filter(a.cond, head->data) == 1){ 
                                 printf("-exec select: ");
-                                select(head, 0, a.fields);
+                                exec_select(head, 0, a.fields);
                             }
                             head = head->next;
                         }
                     }
+
+                    // DELETE
+                    if (a.command == 3) {
+                        printf("-exec delete: ");
+                        int cnt = exec_delete(head, a.cond);
+                        printf("deleted: %d rows\n", cnt);
+                    }
+
 
                     // printf("command: %i  origin: %s",a.command, buffer);
                     // printf("fileds: %s\n",a.fields);

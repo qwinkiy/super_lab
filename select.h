@@ -3,7 +3,7 @@
 #include "list.h"
 
 
-void select(struct node* head, int n, const char* fields) {
+void exec_select(struct node* head, int n, const char* fields) {
     // int counter = 0;
     // while (counter < n && head) {
     //     head = head->next;

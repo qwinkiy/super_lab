@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -581,9 +583,12 @@ int filter(const char* cond, struct row r)
             result = do_work(single_cond, r);
             if(result == 0)
             {
-                free(glob_field);
-                free(glob_value);
-                free(single_cond);
+                if (glob_field)
+                    free(glob_field);
+                if (glob_value)
+                    free(glob_value);
+                if (single_cond)
+                    free(single_cond);
                 return 0;        
             }
             
@@ -595,9 +600,12 @@ int filter(const char* cond, struct row r)
             temp_len += strlen(single_cond) + 1;            
         }
 
-        free(glob_field);
-        free(glob_value);
-        free(single_cond);
+        if (glob_field)
+            free(glob_field);
+        if (glob_value)
+            free(glob_value);
+        if (single_cond)
+            free(single_cond);
     }    
     
     return 1;

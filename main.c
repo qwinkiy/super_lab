@@ -114,3 +114,9 @@ void main()
     return;
 }
 
+// last first middle
+// Dolgov Ivan Vovkin, номер 89173456778, дисконт: 1, бонус: 1, услуги: calls sms gprs internets1 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10
+// Vologin Artem Ufydarovich, номер 89881122333, дисконт: 3, бонус: 3, услуги: calls sms
+// Ivanov Artem Ufydarovich, номер 88005553535, дисконт: 3, бонус: 3, услуги: calls sms
+// last FIRST middle, номер 89173456789, дисконт: 0, бонус: 0, услуги: s1 s2 s333
+
