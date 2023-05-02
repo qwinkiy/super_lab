@@ -19,6 +19,8 @@ struct node* read_command(struct node* head) {
 					
                     //INSERT
 					if (a.command == 1) {
+                        printf("-exec insert %s\n", a.fields);
+                        
 						exec_insert(head, a.fields);
                         int cnt = get_list_size(head);
                         printf("select: %d\n", cnt);
@@ -44,20 +46,10 @@ struct node* read_command(struct node* head) {
 
                     // UNIQ
                     if (a.command == 5) {
-                        // printf("-exec uniq: ");
-                        // head = exec_uniq(head, a.cond);
-                        
+                        printf("-exec uniq: ");
+                        exec_uniq(head, a.cond);                        
                     }
                 }
-
-
-                    // printf("command: %i  origin: %s",a.command, buffer);
-                    // printf("fileds: %s\n",a.fields);
-                    // printf("fil_len: %i\n",a.fil_len);
-                    // printf("cond: %s\n",a.cond);
-                    // printf("con_len: %i\n",a.con_len);
-                    // printf("конец\n\n");
-                    // вызов команд
         }
         
         fclose(f);

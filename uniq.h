@@ -14,15 +14,16 @@ int exec_uniq(struct node* head, const char* fields) {
     int first = 1;
     int cnt=0;
     int i = 0;
-    struct node* head_base = head;
-    while (head != NULL) {
-        if (uniq(head, fields, i) == 1) {
+    struct node* hd = head;
+    struct node* head_base = hd;
+    while (hd != NULL) {
+        if (uniq(hd, fields, i) == 1) {
             delete_node(&head_base, i);
-            head = head_base;
+            hd = head_base;
             cnt++;
             i--;        
         }
-        head = head->next;
+        hd = hd->next;
         i++;
     }
     printf("uniq: %d rows\n", cnt);
@@ -31,6 +32,7 @@ int exec_uniq(struct node* head, const char* fields) {
 
 int uniq(struct node* head, const char* fields, int n)
 {
+    struct node* hd = head;
     const char* del_serv = ",";
     char tmp[1024];
     strcpy(tmp, fields);
@@ -51,50 +53,50 @@ int uniq(struct node* head, const char* fields, int n)
         if (strcmp(flds[j], "last_name") == 0)
         {
             strcat(filter_cond, "last_name==");
-            strcat(filter_cond, head->data.last_name);
+            strcat(filter_cond, hd->data.last_name);
             strcat(filter_cond, " ");
         }             
         if (strcmp(flds[j], "first_name") == 0)
         {
             strcat(filter_cond, "first_name==");
-            strcat(filter_cond, head->data.first_name);
+            strcat(filter_cond, hd->data.first_name);
             strcat(filter_cond, " ");
         }            
         if (strcmp(flds[j], "middle_name") == 0)
         {
             strcat(filter_cond, "middle_name==");
-            strcat(filter_cond, head->data.middle_name);
+            strcat(filter_cond, hd->data.middle_name);
             strcat(filter_cond, " ");
         }            
         if (strcmp(flds[j], "number") == 0)
         {
             strcat(filter_cond, "number==");
-            strcat(filter_cond, head->data.number);
+            strcat(filter_cond, hd->data.number);
             strcat(filter_cond, " ");
         }            
         if (strcmp(flds[j], "bonus_id") == 0)
         {
             char* bonus_id;
-            itoa(head->data.bonus_id, bonus_id, 10);           
+            itoa(hd->data.bonus_id, bonus_id, 10);           
             strcat(filter_cond, "bonus_id==");
-            strcat(filter_cond, head->data.bonus_id); 
+            strcat(filter_cond, bonus_id); 
             strcat(filter_cond, " ");
         }            
         if (strcmp(flds[j], "discount_id") == 0)
         {
             char* discount_id; 
-            itoa(head->data.discount_id, discount_id, 10);
+            itoa(hd->data.discount_id, discount_id, 10);
             strcat(filter_cond, "discount_id==");
-            strcat(filter_cond, head->data.discount_id);
+            strcat(filter_cond, discount_id);
             strcat(filter_cond, " ");
         }
         if (strcmp(flds[j], "services") == 0) 
         {
             for (int k = 0; k < MAX_SERVICES; k++) 
             {                
-                if (head->data.services[k][0] != '\0') {
+                if (hd->data.services[k][0] != '\0') {
                     strcat(filter_cond, "services==");
-                    strcat(filter_cond, head->data.services[k]);
+                    strcat(filter_cond, hd->data.services[k]);
                     strcat(filter_cond, " ");
                 } else {
                     break;
@@ -103,9 +105,9 @@ int uniq(struct node* head, const char* fields, int n)
         }
     }    
     
-    struct node* nested_head = head->next;
+    struct node* nested_head = hd->next;
     while (nested_head != NULL) {   
-        if(filter(&filter_cond, nested_head->data))
+        if(filter(filter_cond, nested_head->data))
         {
             return 1;
         }     
