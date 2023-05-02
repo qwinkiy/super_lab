@@ -538,74 +538,46 @@ int do_work(const char* cond, struct row r)
     }
 }
 
-char* get_single_cond(const char* cond, int offset)
-{
-    if(offset != 0) offset += 1; // пропускаем пробел
-    for(int i = offset; i < strlen(cond); i++)
-    {
-        int size = 0;
-        char t = cond[i];
-        if(t == ' ')
-        {
-            size = abs(offset - i);
-            char* res = (char*)malloc(size);
-            memcpy(res, cond + offset, size);
-            res[size] = '\0';
-            return res;
-        }
-    }
-
-    if(offset != 0)
-    {
-        char* res = (char*)malloc(strlen(cond) - offset);
-        memcpy(res, cond + offset, strlen(cond) - offset);
-        res[strlen(cond) - offset] = '\0';
-        return res;
-    }
-
-    return NULL;
-}
-
 int filter(const char* cond, struct row r) 
 {
     int result; 
     int len_cond = strlen(cond);
-    int temp_len = 0;
     if (len_cond == 0)
     {
         return 1;
     }
     else
     {          
-        char* single_cond = get_single_cond(cond, 0);    
-        temp_len += strlen(single_cond);     
-        while (single_cond) {   
-            result = do_work(single_cond, r);
+        const char* del_serv = " ";
+        char tmp[1024];
+        strcpy(tmp, cond);
+        char* service = strtok(tmp, del_serv);
+        char single_cond[20][30];
+
+        int i = 0;
+        while (service) {
+            strcpy(single_cond[i], service);
+            service = strtok(NULL, del_serv);
+            i++;
+        }
+
+        for (int j=0; j<i; j++) 
+        {
+            result = do_work(single_cond[j], r);
             if(result == 0)
             {
                 if (glob_field)
                     free(glob_field);
                 if (glob_value)
                     free(glob_value);
-                if (single_cond)
-                    free(single_cond);
                 return 0;        
-            }
-            
-            if(temp_len >= len_cond)
-            {
-                break;
-            }
-            single_cond = get_single_cond(cond, temp_len);
-            temp_len += strlen(single_cond) + 1;            
-        }
+            }            
 
-        if (glob_field)
-            free(glob_field);
-        if (glob_value)
-            free(glob_value);
-        if (single_cond)
-            free(single_cond);
+            if (glob_field)
+                free(glob_field);
+            if (glob_value)
+                free(glob_value);
+        }        
     }    
     
     return 1;
