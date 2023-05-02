@@ -102,6 +102,8 @@ void main()
     printf("\n\nAfter processing\n");
     print_list(head);
 
+    
+
     // Не поднимать!
     free_list(head);
     print_mem();

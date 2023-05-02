@@ -1,5 +1,5 @@
 update    last_name=UPDDATE,first_name=DOWNDATE last_name==last
-insert    last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g
+insert    last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,discont_id=f,bonus_id=g
 select    last_name,middle_name,discount_id last_name==Ivanov number==88005553535 services/include/['calls','sms']
 update    last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,discont_id=2,bonus_id=8 first_name==Artem
 uniq      last_name,middle_name,discont_id
@@ -7,7 +7,7 @@ uniq      last_name,middle_name,discont_id
 asdasd
 sdfsdf
 
-insert last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g
+insert last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,discont_id=f,bonus_id=g
 fgselect middle_name,discount_id,services,last_name,bonus_id last_name==Ivanov number==88005553535
 update    number=8999445522,discount_id=6,bonus_id=6,first_name='VOVAN' last_name==Dolgov number==89173456778 
 uniq last_name,middle_name,discont_id

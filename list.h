@@ -65,6 +65,15 @@ struct node* get_node(struct node* head, int n) {
     return head;
 }
 
+int get_list_size(struct node* head) {
+    int counter = 0;
+    while (head) {
+        head = head->next;
+        counter++;
+    }
+    return counter;
+}
+
 void print_node(struct node* head, int n) {
     int counter = 0;
     while (counter < n && head) {

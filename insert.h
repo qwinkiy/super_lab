@@ -26,7 +26,7 @@ struct row row_to_insert(const char* fields){
         const char* del_serv = "=";
         char* field = strtok(single_fld[j], del_serv);
         char* value = strtok(NULL, del_serv);
-        printf("=== field = %s, value = %s\n", field,value);
+        // printf("=== field = %s, value = %s\n", field,value);
     
         if (strcmp(field, "last_name") == 0) 
             strcpy(row.last_name, value);
@@ -42,4 +42,9 @@ struct row row_to_insert(const char* fields){
             row.discount_id = atoi(value);
     }
     return (row);
+}
+
+void exec_insert(struct node* head, const char* fields) {
+    struct row r = row_to_insert(fields);
+    insert_back(&head, r);
 }

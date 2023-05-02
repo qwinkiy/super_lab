@@ -16,9 +16,12 @@ struct node* read_command(struct node* head) {
         while((fgets(buffer, 256, f)) != NULL) {
             struct command a = parse_command(buffer);
                 if (a.command != -1) {
-					//INSERT
+					
+                    //INSERT
 					if (a.command == 1) {
-						//row_to_insert(a.fields);
+						exec_insert(head, a.fields);
+                        int cnt = get_list_size(head);
+                        printf("select: %d\n", cnt);
 					}
 
                     // SELECT
@@ -35,8 +38,8 @@ struct node* read_command(struct node* head) {
 
                     // UNIQ
                     if (a.command == 5) {
-                        printf("-exec uniq: ");
-                        head = exec_uniq(head, a.cond);
+                        // printf("-exec uniq: ");
+                        // head = exec_uniq(head, a.cond);
                         
                     }
 
