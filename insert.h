@@ -74,4 +74,5 @@ void exec_insert(struct node* head, const char* fields) {
     struct row* r = row_to_insert(fields);
     if (r != NULL)
         insert_back(&head, *r);
+        free(r);
 }

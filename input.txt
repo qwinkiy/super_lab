@@ -1,1 +1,17 @@
-uniq      bonus_id,first_name,discount_id,services
+select first_name,number,service first_name/in/['Ivan','Semen','Artem','FIRST']
+update    last_name=UPDDATE,first_name=DOWNDATE last_name==last
+insert    last_name=Pirogov,first_name=b,middle_name=c,number=88005553535,discount_id=3,bonus_id=g
+select    last_name,middle_name,discount_id last_name==Ivanov number==88005553535 services/include/['calls','sms']
+update    last_name=Ivanov,first_name=Artemka,middle_name=Ufydarovich_,number=88005553535,discont_id=2,bonus_id=8 first_name==Artem
+uniq      first_name
+
+asdasd
+sdfsdf
+
+insert last_name=Belashov,first_name=b,middle_name=c,number=88005553535,discount_id=f,bonus_id=9
+fgselect middle_name,discount_id,services,last_name,bonus_id last_name==Ivanov number==88005553535
+update    number=8999445522,discount_id=6,bonus_id=6,first_name='VOVAN' last_name==Dolgov number==89173456778 
+uniq last_name,middle_name,discont_id
+delete last_name==Dolgov number==8999445522
+delete first_name==Artemka
+uniq      middle_name,number,services

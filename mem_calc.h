@@ -44,6 +44,7 @@ void* _realloc(void* ptr, size_t size) {
     _realloc(ptr, size)
 
 void print_mem() {
+    printf("\n");
     printf("malloc:%d\n", c_malloc);
     printf("realloc:%d\n", c_realloc);
     printf("calloc:%d\n", c_calloc);

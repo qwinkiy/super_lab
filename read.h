@@ -19,11 +19,9 @@ struct node* read_command(struct node* head) {
 					
                     //INSERT
 					if (a.command == 1) {
-                        printf("-exec insert %s\n", a.fields);
-                        
 						exec_insert(head, a.fields);
                         int cnt = get_list_size(head);
-                        printf("select: %d\n", cnt);
+                        printf("total: %d\n", cnt);
 					}
 
                     // SELECT
@@ -33,20 +31,17 @@ struct node* read_command(struct node* head) {
                 
                     // DELETE
                     if (a.command == 3) {
-                        printf("-exec delete: ");
                         head = exec_delete(head, a.cond);
                         
                     }
                     // UPDATE
                     if (a.command == 4) {
-                        printf("-exec update %s %s\n", a.fields, a.cond);
                         int cnt = exec_update(head, a.cond, a.fields);
                         printf("update: %d\n", cnt);
                     }
 
                     // UNIQ
                     if (a.command == 5) {
-                        printf("-exec uniq: ");
                         exec_uniq(head, a.fields);                        
                     }
                 }

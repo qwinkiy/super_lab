@@ -81,17 +81,10 @@ struct node* read_db() {
 void main()
 {
     struct node* head = read_db();  
-    print_list(head);
-
-    delete_node(&head, 1);
-    printf("\nAfter deleting\n");
-
-    print_list(head);
+    // print_list(head);
 
     struct row temp = {"last", "FIRST", "middle", "89173456789", {"s1","s2","s333"}};
-    insert_back(&head, temp);
-
-    printf("\nAfter inserting\n");
+    insert_back(&head, temp);    
 
     print_list(head);
 
@@ -104,6 +97,7 @@ void main()
 
     // Не поднимать!
     free_list(head);
+    
     print_mem();
 
     return;

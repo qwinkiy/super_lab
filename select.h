@@ -7,10 +7,11 @@
 void exec_select(struct node* head, const char* cond, const char* fields) {
     struct node* hd = head;
 
+    int cnt = 0;
+
     while (hd != NULL) {
         if (filter(cond, hd->data) == 1){ 
-            printf("-exec select: ");
-
+            cnt++;                    
             const char* del_serv = ",";
             char tmp[1024];
             strcpy(tmp, fields);
@@ -62,4 +63,5 @@ void exec_select(struct node* head, const char* cond, const char* fields) {
         }
         hd = hd->next;
     }
+    printf("select: %d\n", cnt);
 }

@@ -125,7 +125,7 @@ int exec_uniq(struct node* head, const char* fields) {
         hd = hd->next;
         i++;
     }
-    printf("uniq: %d rows\n", cnt);
+    printf("uniq: %d\n", cnt);
     return cnt;
 }
 
