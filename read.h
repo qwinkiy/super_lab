@@ -7,7 +7,7 @@
 #include "delete.h"
 #include "update.h"
 
-void read_command(struct node* head) {
+struct node* read_command(struct node* head) {
     char buffer[256];
     FILE * f = fopen("input.txt","r");
     if(f) {
@@ -48,4 +48,5 @@ void read_command(struct node* head) {
         
         fclose(f);
     }
+    return head;
 };

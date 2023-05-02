@@ -97,7 +97,7 @@ void main()
 
     printf("\n\nOne node\n");
 
-    read_command(head);
+    head = read_command(head);
 
 
     // Не поднимать!

@@ -33,7 +33,13 @@ int exec_update(struct node* head, const char* fltr, const char* fld) {
                 char* value = strtok(NULL, del_serv);
                 printf("=== field = %s, value = %s\n", field,value);
 
-                // TODO
+                if (strcmp(field, "last_name") == 0) 
+                    strcpy(head->data.last_name,value);
+                // if (strcmp(field, "first_name") == 0) 
+                // if (strcmp(field, "middle_name") == 0) 
+                // if (strcmp(field, "number") == 0) 
+                // if (strcmp(field, "bonus_id") == 0) 
+                // if (strcmp(field, "discount_id") == 0) 
             }
 
             delete_node(&head, i);

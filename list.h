@@ -98,7 +98,9 @@ struct row pop(struct node **head) {
 
 struct row delete_node(struct node** head, int n) {
     if (n == 0) {
-        return pop(head);
+        struct node* prev = get_node(*head, 0);
+        (*head) = (*head)->next;
+        free(prev);
     } else {
         struct node *prev = get_node(*head, n-1);
         struct node *elm  = prev->next;
