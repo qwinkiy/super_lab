@@ -566,10 +566,10 @@ int filter(const char* cond, struct row r)
             result = do_work(single_cond[j], r);
             if(result == 0)
             {
-                if (glob_field)
-                    free(glob_field);
-                if (glob_value)
-                    free(glob_value);
+                // if (glob_field)
+                //     free(glob_field);
+                // if (glob_value)
+                //     free(glob_value);
                 return 0;        
             }            
 
