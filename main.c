@@ -6,6 +6,7 @@
 #include "list.h"
 #include "select.h"
 #include "read.h"
+#include "filter.h"
 
 struct node* read_db() {
 
@@ -96,19 +97,12 @@ void main()
 
     printf("\n\nOne node\n");
 
-    // select(head, 2, "number,services,middle_name,first_name,last_name");
-
     read_command(head);
 
+
+    // Не поднимать!
     free_list(head);
     print_mem();
-
-    // char* s = "1234567890";
-    // char buf[10] ;
-    // strcpy(buf, s);
-
-    // printf("s = %s\n", s);
-    // printf("b = %s\n", buf);
 
 
     return;

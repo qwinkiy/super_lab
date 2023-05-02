@@ -1,14 +1,15 @@
-insert    last_name=Иванов,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g
+insert    last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g
 select    last_name,middle_name,discount_id last_name==Ivanov number==88005553535 services/include/['calls','sms']
-delete    last_name==Иванов number==88005553535
-update    last_name=Иванов,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g last_name==Иванов number==88005553535
+delete    last_name==Ivanov number==88005553535
+delete    middle_name==middle discont_id==0
+update    last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g last_name==Ivanov number==88005553535
 uniq      last_name,middle_name,discont_id
 
 asdasd
 sdfsdf
 
-insert last_name=Иванов,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g
-fgselect middle_name,discount_id,services,last_name,bonus_id last_name==Иванов number==88005553535
-delete last_name==Иванов number==88005553535
-update ast_name=Иванов,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g last_name==Иванов number==88005553535
+insert last_name=Ivanov,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g
+fgselect middle_name,discount_id,services,last_name,bonus_id last_name==Ivanov number==88005553535
+delete last_name==Ivanov number==88005553535
+update ast_name=Ivanov,first_name=b,middle_name=c,number=88005553535,services=[d,e],discont_id=f,bonus_id=g last_name==Ivanov number==88005553535
 uniq last_name,middle_name,discont_id
