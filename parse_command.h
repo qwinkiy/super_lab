@@ -53,27 +53,44 @@ struct command parse_command(const char* str1) {
     char * token = strtok(str_t, " ");
     if (strcmp(token, "insert") == 0){
         comm.command = 1;
-        strcpy(comm.fields, strtok(NULL, " "));        
+        char * tmp = strtok(NULL, " ");
+        if (tmp)
+            strcpy(comm.fields, tmp);
+        else printf("incorrect command: %s\n", str1);
     }
     else if (strcmp(token, "select") == 0){
         comm.command = 2;
-        strcpy(comm.fields, strtok(NULL, " "));
-        strcpy(comm.cond, strtok(NULL, ""));
+        char * tmp = strtok(NULL, " ");
+        if (tmp)
+            strcpy(comm.fields, tmp);
+            tmp = strtok(NULL, "");
+            if (tmp)
+                strcpy(comm.cond, tmp);
+            else printf("incorrect command: %s\n", str1);
     }
     else if (strcmp(token, "delete") == 0) {
         comm.command = 3;
-        strcpy(comm.cond, strtok(NULL, ""));
+        char * tmp = strtok(NULL, "");
+        if (tmp)
+            strcpy(comm.cond, tmp);
+        else printf("incorrect command: %s\n", str1);
     }
     else if (strcmp(token, "update") == 0) {
         comm.command = 4;
-        strcpy(comm.fields, strtok(NULL, " "));
-        strcpy(comm.cond, strtok(NULL, ""));
+        char * tmp = strtok(NULL, " ");
+        if (tmp)
+            strcpy(comm.fields, tmp);
+            tmp = strtok(NULL, "");
+            if (tmp)
+                strcpy(comm.cond, tmp);
+            else printf("incorrect command: %s\n", str1);
     }
     else if (strcmp(token, "uniq") == 0) {
         comm.command = 5;
         char * tmp = strtok(NULL, " ");
         if (tmp)
             strcpy(comm.fields, tmp);
+        else printf("incorrect command: %s\n", str1);
     }
     //проверка на атрибуты
     switch (comm.command){
