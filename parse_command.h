@@ -7,9 +7,7 @@
 struct command{
     int command; 
     char fields[100];
-    int fil_len;
     char cond[100];
-    int con_len;
 };
 
 // Функция: замена подстроки в строке на заданную последовательность символов - C (СИ)
@@ -49,53 +47,33 @@ char* find_and_insert(char* str,char* sub_str, char* sub_str_rep){
 }
 
 struct command parse_command(const char* str1) {
-    struct command comm = {-1, "\0", 0, "\0", 0};
+    struct command comm; // = {-1, "\0", 0, "\0", 0};
     char str_t[1024];
     strcpy(str_t, str1);
     char * token = strtok(str_t, " ");
     if (strcmp(token, "insert") == 0){
         comm.command = 1;
-        strcpy(comm.fields, strtok(NULL, " "));
-        if (comm.fields)
-            comm.fil_len = strlen(comm.fields);
-        else comm.fil_len = 0;
+        strcpy(comm.fields, strtok(NULL, " "));        
     }
     else if (strcmp(token, "select") == 0){
         comm.command = 2;
         strcpy(comm.fields, strtok(NULL, " "));
-        if (comm.fields)
-            comm.fil_len = strlen(comm.fields);
-        else comm.fil_len = 0;        
         strcpy(comm.cond, strtok(NULL, ""));
-        if (comm.cond)
-            comm.con_len = strlen(comm.cond);
-        else comm.con_len = 0;
     }
-    else if (strcmp(token, "delete") == 0){
+    else if (strcmp(token, "delete") == 0) {
         comm.command = 3;
         strcpy(comm.cond, strtok(NULL, ""));
-        if (comm.cond)
-            comm.con_len = strlen(comm.cond);
-        else comm.con_len = 0;
     }
-    else if (strcmp(token, "update") == 0){
+    else if (strcmp(token, "update") == 0) {
         comm.command = 4;
         strcpy(comm.fields, strtok(NULL, " "));
-        if (comm.fields)
-            comm.fil_len = strlen(comm.fields);
-        else comm.fil_len = 0;
-
         strcpy(comm.cond, strtok(NULL, ""));
-        if (comm.cond)
-            comm.con_len = strlen(comm.cond);
-        else comm.con_len = 0;
     }
-    else if (strcmp(token, "uniq") == 0){
+    else if (strcmp(token, "uniq") == 0) {
         comm.command = 5;
-        strcpy(comm.fields, strtok(NULL, " "));
-        if (comm.fields)
-            comm.fil_len = strlen(comm.fields);
-        else comm.fil_len = 0;
+        char * tmp = strtok(NULL, " ");
+        if (tmp)
+            strcpy(comm.fields, tmp);
     }
     //проверка на атрибуты
     switch (comm.command){

@@ -47,7 +47,7 @@ struct node* read_command(struct node* head) {
                     // UNIQ
                     if (a.command == 5) {
                         printf("-exec uniq: ");
-                        exec_uniq(head, a.cond);                        
+                        exec_uniq(head, a.fields);                        
                     }
                 }
         }

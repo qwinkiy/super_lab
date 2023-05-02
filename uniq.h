@@ -10,26 +10,6 @@
 
 #define FILTER_ARRAY_SIZE 100
 
-int exec_uniq(struct node* head, const char* fields) {
-    int first = 1;
-    int cnt=0;
-    int i = 0;
-    struct node* hd = head;
-    struct node* head_base = hd;
-    while (hd != NULL) {
-        if (uniq(hd, fields, i) == 1) {
-            delete_node(&head_base, i);
-            hd = head_base;
-            cnt++;
-            i--;        
-        }
-        hd = hd->next;
-        i++;
-    }
-    printf("uniq: %d rows\n", cnt);
-    return cnt;
-}
-
 int uniq(struct node* head, const char* fields, int n)
 {
     struct node* hd = head;
@@ -76,7 +56,7 @@ int uniq(struct node* head, const char* fields, int n)
         }            
         if (strcmp(flds[j], "bonus_id") == 0)
         {
-            char* bonus_id;
+            char bonus_id[12];
             itoa(hd->data.bonus_id, bonus_id, 10);           
             strcat(filter_cond, "bonus_id==");
             strcat(filter_cond, bonus_id); 
@@ -84,7 +64,7 @@ int uniq(struct node* head, const char* fields, int n)
         }            
         if (strcmp(flds[j], "discount_id") == 0)
         {
-            char* discount_id; 
+            char discount_id[12]; 
             itoa(hd->data.discount_id, discount_id, 10);
             strcat(filter_cond, "discount_id==");
             strcat(filter_cond, discount_id);
@@ -116,3 +96,25 @@ int uniq(struct node* head, const char* fields, int n)
 
     return 0;  
 }
+
+int exec_uniq(struct node* head, const char* fields) {
+    int first = 1;
+    int cnt=0;
+    int i = 0;
+    struct node* hd = head;
+    struct node* head_base = hd;
+    while (hd != NULL) {
+        if (uniq(hd, fields, i) == 1) {
+            delete_node(&head_base, i);
+            head = head_base;
+            hd = head;
+            cnt++;
+            i--;        
+        }
+        hd = hd->next;
+        i++;
+    }
+    printf("uniq: %d rows\n", cnt);
+    return cnt;
+}
+

@@ -100,9 +100,7 @@ void main()
     head = read_command(head);
 
     printf("\n\nAfter processing\n");
-    print_list(head);
-
-    
+    print_list(head); 
 
     // Не поднимать!
     free_list(head);
