@@ -9,15 +9,26 @@
 #include "filter.h"
 
 int exec_delete(struct node* head, const char* fltr) {
-    int i = 0;
-    int res = 0;
+    int first = 1;
+    int cnt=0;
+    struct node* head_base = head;
     while (head != NULL) {
         if (filter(fltr, head->data) == 1){ 
-            delete_node(&head, i);
-            res++;
+            if (first == 1) {
+                pop(&head);    
+                head_base = head;
+                cnt++;
+                continue;
+            }
+            else {
+                pop(&head);
+                cnt++;
+                first = 0;
+                continue;
+            }            
         }
-        i++;
         head = head->next;
     }
-    return res;
+    printf("deleted: %d rows\n", cnt);
+    return head_base;
 }
