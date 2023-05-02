@@ -6,6 +6,7 @@
 #include "filter.h"
 #include "delete.h"
 #include "update.h"
+#include "uniq.h"
 
 struct node* read_command(struct node* head) {
     char buffer[256];
@@ -24,6 +25,13 @@ struct node* read_command(struct node* head) {
                     if (a.command == 3) {
                         printf("-exec delete: ");
                         head = exec_delete(head, a.cond);
+                        
+                    }
+
+                    // UNIQ
+                    if (a.command == 5) {
+                        printf("-exec uniq: ");
+                        head = exec_uniq(head, a.cond);
                         
                     }
 
