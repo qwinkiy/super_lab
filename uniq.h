@@ -12,6 +12,8 @@
 
 int uniq(struct node* head, const char* fields, int n)
 {
+    if(strlen(fields) == 0) return 0;
+
     struct node* hd = head;
     const char* del_serv = ",";
     char tmp[1024];
@@ -72,16 +74,25 @@ int uniq(struct node* head, const char* fields, int n)
         }
         if (strcmp(flds[j], "services") == 0) 
         {
-            for (int k = 0; k < MAX_SERVICES; k++) 
+            strcat(filter_cond, "services==[");
+            for (int k = 0; k <= MAX_SERVICES; k++) 
             {                
-                if (hd->data.services[k][0] != '\0') {
-                    strcat(filter_cond, "services==");
+                if (hd->data.services[k][0] != '\0') {          
+                    strcat(filter_cond, "'");          
                     strcat(filter_cond, hd->data.services[k]);
-                    strcat(filter_cond, " ");
-                } else {
+                    strcat(filter_cond, "'");
+                } 
+                else 
+                {       
+                    strcat(filter_cond, "]");             
                     break;
-                }
-            }            
+                }      
+
+                if(k != MAX_SERVICES && hd->data.services[k + 1][0] != '\0')
+                {
+                    strcat(filter_cond, ",");
+                }  
+            }
         }
     }    
     
